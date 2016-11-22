@@ -1,0 +1,3 @@
+fcm_http_homepage:
+    path:     /
+    defaults: { _controller: FcmHttpBundle:Default:index }
