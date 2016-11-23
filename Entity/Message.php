@@ -4,21 +4,43 @@ namespace DigitalAp\FcmHttpBundle\Entity;
 
 
 use DigitalAp\FcmHttpBundle\Model\FCM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Message
 {
-    private $registration_ids;
     private $priority;
     private $time_to_live;
+    private $delay_while_idle;
+    private $to;
+    private $registration_ids;
     private $notification;
     private $data;
 
     public function __construct(array $registration_ids)
     {
         $this->registration_ids = $registration_ids;
+        if (count($registration_ids) == 1) {
+            $this->to = $registration_ids[0];
+            $this->registration_ids = null;
+        }
         $this->priority = FCM::MESSAGE_PRIORITY_NORMAL;
-        $this->time_to_live = null;
-        $this->data = array();
+        $this->data = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTo()
+    {
+        return $this->to;
+    }
+
+    /**
+     * @param mixed $to
+     */
+    public function setTo($to)
+    {
+        $this->to = $to;
     }
 
     /**
@@ -114,6 +136,22 @@ class Message
         $this->data = $data;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDelay_while_idle()
+    {
+        return $this->delay_while_idle;
+    }
+
+    /**
+     * @param mixed $delay_while_idle
+     */
+    public function setDelay_while_idle($delay_while_idle)
+    {
+        $this->delay_while_idle = $delay_while_idle;
     }
 
 }

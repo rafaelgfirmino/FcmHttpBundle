@@ -23,6 +23,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
             ->scalarNode('autentication_api_key')->isRequired()->cannotBeEmpty()->end()
+            ->scalarNode('api_url')->defaultValue('https://fcm.googleapis.com/fcm/send')->end()
             ->end();
 
         return $treeBuilder;

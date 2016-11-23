@@ -1,3 +1,9 @@
 services:
+
+    guzzle:
+       class: GuzzleHttp\Client
+
     fcm_http.send:
         class: DigitalAp\FcmHttpBundle\Services\FcmSend
+        arguments: ['@guzzle', '%fcm_http.autentication_api_key%']
+
