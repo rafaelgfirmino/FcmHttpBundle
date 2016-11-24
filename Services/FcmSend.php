@@ -10,14 +10,17 @@ use GuzzleHttp\Client;
 
 class FcmSend
 {
+
     private $serializer;
     private $client;
-    private $api_key;
+    private $autentication_api_key;
+    private $fcm_api_url;
 
-    public function __construct(Client $client, $api_key)
+    public function __construct(Client $client, $autentication_api_key,$fcm_api_url)
     {
         $this->client = $client;
-        $this->api_key = $api_key;
+        $this->fcm_api_url = $fcm_api_url;
+        $this->autentication_api_key = $autentication_api_key;
         $encoders = array(new JsonEncoder());
         $normalizers = array(new GetSetMethodNormalizer());
         $this->serializer = new Serializer($normalizers, $encoders);
@@ -29,19 +32,19 @@ class FcmSend
             $message,
             'json'
         );
+
         $messageJson = preg_replace('/,\s*"[^"]+":null|"[^"]+":null,?|,"[^"]+":\[\]|"[^"]+":\[\],?/', '', $messageJson);
 
-        $rest = [
+        $FCMjson = [
             'headers' => [
-                'Authorization' => sprintf('key=%s', $this->api_key),
+                'Authorization' => sprintf('key=%s', $this->autentication_api_key),
                 'Content-Type' => 'application/json'
             ],
             'body' => $messageJson
         ];
-        $response = $this->client->post('https://fcm.googleapis.com/fcm/send',$rest);
 
+        $response = $this->client->post($this->fcm_api_url,$FCMjson);
         return $response->getStatusCode();
-
     }
 
 }

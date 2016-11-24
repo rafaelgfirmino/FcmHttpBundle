@@ -5,5 +5,5 @@ services:
 
     fcm_http.send:
         class: DigitalAp\FcmHttpBundle\Services\FcmSend
-        arguments: ['@guzzle', '%fcm_http.autentication_api_key%']
+        arguments: ['@guzzle', '%fcm_http.autentication_api_key%','%fcm_http.api_url%']
 

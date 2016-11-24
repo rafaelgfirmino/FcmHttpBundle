@@ -23,6 +23,7 @@ class FcmHttpExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('fcm_http.autentication_api_key', $config['autentication_api_key']);
+        $container->setParameter('fcm_http.api_url', $config['api_url']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
