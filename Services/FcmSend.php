@@ -1,5 +1,4 @@
 <?php
-
 namespace DigitalAp\FcmHttpBundle\Services;
 
 use DigitalAp\FcmHttpBundle\Entity\Message;
@@ -16,7 +15,7 @@ class FcmSend
     private $autentication_api_key;
     private $fcm_api_url;
 
-    public function __construct(Client $client, $autentication_api_key,$fcm_api_url)
+    public function __construct(Client $client, $autentication_api_key, $fcm_api_url)
     {
         $this->client = $client;
         $this->fcm_api_url = $fcm_api_url;
@@ -28,13 +27,26 @@ class FcmSend
 
     public function send(Message $message)
     {
+        $registrationsIds = array_chunk($message->getRegistration_ids(), 1000);
+        $response = array();
+
+        foreach ($registrationsIds as $thousandFirstRegistration_ids) {
+            $messageJson = $this->transformInMessage($message, $thousandFirstRegistration_ids);
+            $response[] = $this->client->post($this->fcm_api_url, $messageJson);
+        }
+
+        return $response;
+    }
+
+    private function transformInMessage(Message $message, $registrationsIdsJson)
+    {
+        $message->setRegistration_ids($registrationsIdsJson);
         $messageJson = $this->serializer->serialize(
             $message,
             'json'
         );
 
         $messageJson = preg_replace('/,\s*"[^"]+":null|"[^"]+":null,?|,"[^"]+":\[\]|"[^"]+":\[\],?/', '', $messageJson);
-
         $FCMjson = [
             'headers' => [
                 'Authorization' => sprintf('key=%s', $this->autentication_api_key),
@@ -43,8 +55,7 @@ class FcmSend
             'body' => $messageJson
         ];
 
-        $response = $this->client->post($this->fcm_api_url,$FCMjson);
-        return $response->getStatusCode();
+        return $FCMjson;
     }
 
 }
