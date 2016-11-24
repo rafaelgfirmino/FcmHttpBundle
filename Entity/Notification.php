@@ -1,22 +1,102 @@
 <?php
 namespace DigitalAp\FcmHttpBundle\Entity;
 
-use DigitalAp\FcmHttpBundle\Model\FCM;
 
 class Notification
 {
-    private $body;
+    /**
+     * Indicates notification title. This field is not visible on iOS phones and tablets.
+     * @var string $title
+     */
     private $title;
+
+    /**
+     * Indicates notification body text.
+     * @var string
+     */
+    private $body;
+
+    /**
+     * Indicates notification icon. Sets value to myicon for drawable resource myicon.
+     * If you don't send this key in the request, FCM displays the launcher icon specified in your app manifest.
+     *
+     * @var string
+     */
     private $icon;
+
+    /**
+     * Indicates a sound to play when the device receives a notification. Sound files can be in the main bundle
+     * of the client app or in the Library/Sounds folder of the app's data container.
+     * See the iOS Developer Library for more information.
+     *
+     * @var boolean $sound
+     */
     private $sound;
-    private $badge;
+
+    /**
+     * Indicates whether each notification results in a new entry in the notification drawer on Android.
+     * If not set, each request creates a new notification.
+     * If set, and a notification with the same tag is already being shown, the new notification replaces
+     * the existing one in the notification drawer.
+     *
+     * @var string $tag
+     */
     private $tag;
+
+    /**
+     * Indicates color of the icon, expressed in #rrggbb format
+     *
+     * @var string $color (use hexadecimal)
+     */
     private $color;
+
+    /**
+     * Indicates the badge on the client app home icon.
+     *
+     * @var string $badge
+     */
+    private $badge;
+
+    /**
+     * Indicates the action associated with a user click on the notification.
+     * Corresponds to category in the APNs payload.
+     *
+     * @var string $click_action
+     */
     private $click_action;
+
+    /**
+     * Indicates the key to the body string for localization. Use the key in the app's string resources
+     * when populating this value.
+     *
+     * @var string $body_loc_key
+     */
     private $body_loc_key;
+
+    /**
+     * Indicates the string value to replace format specifiers in the body string for localization.
+     * For more information, see Formatting and Styling.
+     *
+     * @var string|array $body_loc_args
+     */
     private $body_loc_args;
+
+    /**
+     * Indicates the key to the title string for localization. Use the key in the app's string resources
+     * when populating this value.
+     *
+     * @var string $title_loc_key
+     */
     private $title_loc_key;
+
+    /**
+     * Indicates the string value to replace format specifiers in the title string for localization.
+     * For more information, see Formatting strings.
+     *
+     * @var string|array
+     */
     private $title_loc_args;
+
 
     public function __construct($title, $body = null)
     {
@@ -91,7 +171,8 @@ class Notification
     }
 
 
-    public function enableSound(){
+    public function enableSound()
+    {
 
         $this->sound = true;
 
@@ -250,6 +331,5 @@ class Notification
 
         return $this;
     }
-
 
 }
