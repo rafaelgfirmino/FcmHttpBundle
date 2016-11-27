@@ -1,0 +1,23 @@
+{
+    "name": "digitalap/fcmhttpbundle",
+    "type": "symfony-bundle",
+    "description": "A bundle to send notifications to mobile devices through Google FCM with the HTTP protocol ",
+    "license": "MIT",
+    "keywords": ["PHP","FCM","Google","Firebase","Cloud","Notifications","Symfony", "Bundle","Android","iOS","Chrome"],
+    "homepage": "https://github.com/Rafaelgfirmino/FcmHttpBundle",
+    "authors": [
+        {
+            "name": "Rafael Gonçalves Firmino",
+            "email": "rafaelgfirmino@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "guzzlehttp/guzzle": "^6.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "DigitalAp\\FcmHttpBundle\\": ""
+        }
+    }
+}
