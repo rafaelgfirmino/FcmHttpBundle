@@ -9,7 +9,6 @@ use GuzzleHttp\Client;
 
 class FcmSend
 {
-
     private $serializer;
     private $client;
     private $autentication_api_key;
@@ -20,11 +19,16 @@ class FcmSend
         $this->client = $client;
         $this->fcm_api_url = $fcm_api_url;
         $this->autentication_api_key = $autentication_api_key;
+
         $encoders = array(new JsonEncoder());
         $normalizers = array(new GetSetMethodNormalizer());
         $this->serializer = new Serializer($normalizers, $encoders);
     }
 
+    /**
+     * @param Message $message
+     * @return array
+     */
     public function send(Message $message)
     {
         $registrationsIds = array_chunk($message->getRegistration_ids(), 1000);
@@ -38,6 +42,11 @@ class FcmSend
         return $response;
     }
 
+    /**
+     * @param Message $message
+     * @param $registrationsIdsJson
+     * @return array
+     */
     private function transformInMessage(Message $message, $registrationsIdsJson)
     {
         $message->setRegistration_ids($registrationsIdsJson);
@@ -47,7 +56,7 @@ class FcmSend
         );
 
         $messageJson = preg_replace('/,\s*"[^"]+":null|"[^"]+":null,?|,"[^"]+":\[\]|"[^"]+":\[\],?/', '', $messageJson);
-        $FCMjson = [
+        $fcm_json = [
             'headers' => [
                 'Authorization' => sprintf('key=%s', $this->autentication_api_key),
                 'Content-Type' => 'application/json'
@@ -55,7 +64,7 @@ class FcmSend
             'body' => $messageJson
         ];
 
-        return $FCMjson;
+        return $fcm_json;
     }
 
 }
