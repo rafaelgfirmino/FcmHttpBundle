@@ -17,10 +17,9 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('fcm_http');
+        $treeBuilder = new TreeBuilder('fcm_http');
 
-        $rootNode
+        $treeBuilder->getRootNode()
             ->children()
             ->scalarNode('autentication_api_key')->isRequired()->cannotBeEmpty()->end()
             ->scalarNode('api_url')->defaultValue('https://fcm.googleapis.com/fcm/send')->end()
